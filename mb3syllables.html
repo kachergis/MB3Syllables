@@ -8,6 +8,20 @@
   <script src="./plugins/jspsych-survey-text.js"></script>
   <script src="./plugins/jspsych-survey-multi-select.js"></script>
   <script src="./plugins/jquery.min.js"></script>
+  <script src="./plugins/mmturkey.js"></script>
+
+  <script src="//uniqueturker.myleott.com/lib.js" type="text/javascript"></script>
+  <script type="text/javascript">
+  (function(){
+    var ut_id = "87faf8ccd545c22d81fca3bfff4f3aa4";
+    if (UTWorkerLimitReached(ut_id)) {
+        document.getElementById('mturk_form').style.display = 'none';
+        document.getElementsByTagName('body')[0].innerHTML = "You have already completed the maximum number of HITs allowed by this requester. Please click 'Return HIT' to avoid any impact on your approval rating.";
+    }
+  })();
+  </script>
+
+
   <link href="./css/jspsych.css" rel="stylesheet" type="text/css"></link>
 </head>
 <body></body>
@@ -226,8 +240,8 @@ function saveData(filename, filedata){
     filename:filename,
     filedata:filedata
   },function(response,status){ // Required Callback Function
-//"response" receives - whatever written in echo of above PHP script.
-alert("*----Data stored!----*")
+    //"response" receives - whatever written in echo of above PHP script.
+    //alert("*----Data stored!----*");
   });
 }
 
@@ -235,9 +249,12 @@ alert("*----Data stored!----*")
 var outro = {
   type: "html-keyboard-response",
   stimulus: "<p><strong>Thanks! </strong></p><p>Press any key to end. You can close this window.</p>",
-  on_start: function(){
+  on_start: function() {
     jsPsych.setProgressBar(1);
     saveData(subjid, jsPsych.data.get().csv());
+    setTimeout(function() {
+      turk.submit(jsPsych.data.get());
+    }, 5000);
   }
 };
 timeline.push(outro);
