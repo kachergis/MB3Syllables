@@ -227,6 +227,9 @@ var syllable_tmplt03 = {
 //  prompt: function(){ return "How good an example of ["+currsyl+"] is this syllable, on a scale from 1(poor) to 7(great)";},
   prompt: function(){return "<p>You say <strong>["+currsyl+"] </strong></p><p> How good an example is this syllable?</p><p>1..........2..........3..........4..........5..........6..........7</p><p>(Poor example) &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp (Great example)</p>";},
   choices: ['1','2','3','4','5','6','7'],
+  data: {
+    'stim_type': 'typicality'
+  },
   post_trial_gap: 500
 }
 // 'Press a number 1-7 to indicate how typical this sound is.'
@@ -267,7 +270,7 @@ var outro = {
     jsPsych.setProgressBar(1);
     saveData(subjid, jsPsych.data.get().csv());
     setTimeout(function() {
-      turk.submit(jsPsych.data.get().json());
+      turk.submit(jsPsych.data.get().ignore('internal_node_id').ignore('external-html').json());
     }, 5000);
   }
 };
