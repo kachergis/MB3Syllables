@@ -26,69 +26,75 @@
     }
   })();
   </script>
-  
+
 </body>
 <script>
 //   Original jquery got on May 31, 2019 from "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+var timenum = Date.now();
 var turkInfo = jsPsych.turk.turkInfo();
+if(turkInfo==null) {
+  var subjid = 'SS' + timenum;
+} else {
+  var subjid = 'MT-' + turkInfo.workerId;
+}
 
-var currsyl = ""
-var subjid = "SS"
-var timenum = Date.now()
-var dumtrialnum = 0
+jsPsych.data.addProperties({ subject: subjid });
+
+var currsyl = "";
+var dumtrialnum = 0;
 
 var audio = [
-'snd/fa.wav',
-'snd/fe.wav',
-'snd/fu.wav',
-'snd/ka.wav',
-'snd/ke.wav',
-'snd/ku.wav',
-'snd/la.wav',
-'snd/li.wav',
-'snd/lo.wav',
-'snd/ma.wav',
-'snd/me2_0.wav',
-'snd/mu1_0.wav',
-'snd/ni.wav',
-'snd/no.wav',
-'snd/pa2_0.wav',
-'snd/pe2_1.wav',
-'snd/pu3_1.wav',
-'snd/si1_0.wav',
-'snd/so2_0.wav',
-'snd/ta2_1.wav',
-'snd/ti.wav',
-'snd/to.wav'
+  'snd/fa.wav',
+  'snd/fe.wav',
+  'snd/fu.wav',
+  'snd/ka.wav',
+  'snd/ke.wav',
+  'snd/ku.wav',
+  'snd/la.wav',
+  'snd/li.wav',
+  'snd/lo.wav',
+  'snd/ma.wav',
+  'snd/me2_0.wav',
+  'snd/mu1_0.wav',
+  'snd/ni.wav',
+  'snd/no.wav',
+  'snd/pa2_0.wav',
+  'snd/pe2_1.wav',
+  'snd/pu3_1.wav',
+  'snd/si1_0.wav',
+  'snd/so2_0.wav',
+  'snd/ta2_1.wav',
+  'snd/ti.wav',
+  'snd/to.wav'
 ];
 
 
 var syllable_list = [
   {snd01: 'snd/fa.wav'},
-{snd01: 'snd/fe.wav'},
-{snd01: 'snd/fu.wav'},
-{snd01: 'snd/ka.wav'},
-{snd01: 'snd/ke.wav'},
-{snd01: 'snd/ku.wav'},
-{snd01: 'snd/la.wav'},
-{snd01: 'snd/li.wav'},
-{snd01: 'snd/lo.wav'},
-{snd01: 'snd/ma.wav'},
-{snd01: 'snd/me2_0.wav'},
-{snd01: 'snd/mu1_0.wav'},
-{snd01: 'snd/ni.wav'},
-{snd01: 'snd/no.wav'},
-{snd01: 'snd/pa2_0.wav'},
-{snd01: 'snd/pe2_1.wav'},
-{snd01: 'snd/pu3_1.wav'},
-{snd01: 'snd/si1_0.wav'},
-{snd01: 'snd/so2_0.wav'},
-{snd01: 'snd/ta2_1.wav'},
-{snd01: 'snd/ti.wav'},
-{snd01: 'snd/to.wav'}
+  {snd01: 'snd/fe.wav'},
+  {snd01: 'snd/fu.wav'},
+  {snd01: 'snd/ka.wav'},
+  {snd01: 'snd/ke.wav'},
+  {snd01: 'snd/ku.wav'},
+  {snd01: 'snd/la.wav'},
+  {snd01: 'snd/li.wav'},
+  {snd01: 'snd/lo.wav'},
+  {snd01: 'snd/ma.wav'},
+  {snd01: 'snd/me2_0.wav'},
+  {snd01: 'snd/mu1_0.wav'},
+  {snd01: 'snd/ni.wav'},
+  {snd01: 'snd/no.wav'},
+  {snd01: 'snd/pa2_0.wav'},
+  {snd01: 'snd/pe2_1.wav'},
+  {snd01: 'snd/pu3_1.wav'},
+  {snd01: 'snd/si1_0.wav'},
+  {snd01: 'snd/so2_0.wav'},
+  {snd01: 'snd/ta2_1.wav'},
+  {snd01: 'snd/ti.wav'},
+  {snd01: 'snd/to.wav'}
 ];
 var totaltrials = syllable_list.length+4;
-var mytrialctr = 4;
+var mytrialctr = 1;
 
 var timeline = [];
 
@@ -135,16 +141,6 @@ pages: ["<div style='width: 46px; margin: 0 auto; text-align: center; background
 timeline.push(instruct);
 
 
-var welcome = {
-  type: "html-keyboard-response",
-  stimulus: "<p>Press any key to begin the experiment.</p>",
-  on_finish: function() {
-    subjid = 'MT'+timenum;
-    jsPsych.setProgressBar(1/totaltrials);
-    return subjid;
-  }
-};
-timeline.push(welcome);
 
 var language_options1 = ["English", "French", "Dutch", "Spanish", "Catalan", "Hungarian", "German", "Italian", "Portuguese", "Japanese", "Other"];
 var language_options2 = ["None", "English", "French", "Dutch", "Spanish", "Catalan", "Hungarian", "German", "Italian", "Portuguese", "Japanese", "Other"];
@@ -152,7 +148,8 @@ var language_select_block = {
     type: 'survey-multi-select',
     questions: [{prompt: "Language(s) that you are native or very proficient in:", options: language_options1}],
     on_finish: function() {
-      jsPsych.setProgressBar(2/totaltrials);
+      jsPsych.setProgressBar(mytrialctr/totaltrials);
+      mytrialctr +=1;
     }
 };
 timeline.push(language_select_block);
@@ -162,7 +159,8 @@ var instructions = {
   type: "html-keyboard-response",
   stimulus: "<p>In each of the following trials, you will hear one syllable.</p><p>After you have heard the syllable, please indicate the <strong>identity</strong> of the perceived syllable,i.e., which syllable you think you heard,</p><p>You will then hear the syllable again once.</p><p>Then, please indicate how <strong>prototypical</strong> is the syllable of the pereived identity on a scale from 1 to 7</p><p></p><p><mark>Press any key to begin.</mark></p>",
   on_finish: function() {
-    jsPsych.setProgressBar(3/totaltrials);
+    jsPsych.setProgressBar(mytrialctr/totaltrials);
+    mytrialctr +=1;
   }
 };
 timeline.push(instructions);
