@@ -92,7 +92,7 @@ var mytrialctr = 4;
 var timeline = [];
 
 var check_preview = function(elem) {
-  if(turkInfo.previewMode && !turkInfo.outsideTurk) {
+  if(!turkInfo.previewMode && !turkInfo.outsideTurk) {
     return true;
   } else {
     alert("You must accept the HIT to begin the experiment.");

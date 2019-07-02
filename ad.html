@@ -13,7 +13,7 @@
 	// The second property, outsideTurk, is true when the page is viewed
 	// outside of mechanical turk, so together, the statement will be true
 	// only when in Turk and when the HIT is not accepted yet.
-	if(turkInfo.previewMode && !turkInfo.outsideTurk) {
+	if(!turkInfo.previewMode && !turkInfo.outsideTurk) {
 	  $('#experiment_link').html('<a href="mb3syllables.html" target="_self">Click Here to Start the Experiment</a>');
 	}
 </script>
