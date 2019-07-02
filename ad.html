@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <script src="plugins/jspsych.js"></script>
   <script src="./plugins/jquery.min.js"></script>
-  <script src="http://uniqueturker.myleott.com/lib.js" type="text/javascript"></script>
+  <script src="//uniqueturker.myleott.com/lib.js" type="text/javascript"></script>
 
   <script type="text/javascript">
   (function(){
@@ -25,7 +25,7 @@
 <script>
 	// jsPsych has a method turkInfo() which can determine whether or not the
 	// HIT has been accepted.
-	var turkInfo = jsPsych.turkInfo();
+	var turkInfo = jsPsych.turk.turkInfo();
 
 	// turkInfo.previewMode is true in two cases: when the HIT has not been
 	// accepted yet OR when the page is viewed outside of mechanical turk.
