@@ -1,41 +1,8 @@
 
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Rate syllables</title>
-  <meta charset="utf-8">
-  <script src="plugins/jspsych.js"></script>
-  <script src="./plugins/jquery.min.js"></script>
-  <script src="http://uniqueturker.myleott.com/lib.js" type="text/javascript"></script>
 
-  <script type="text/javascript">
-  (function(){
-    var ut_id = "87faf8ccd545c22d81fca3bfff4f3aa4";
-    if (UTWorkerLimitReached(ut_id)) {
-        document.getElementById('mturk_form').style.display = 'none';
-        document.getElementsByTagName('body')[0].innerHTML = "You have already completed the maximum number of HITs allowed by this requester. Please click 'Return HIT' to avoid any impact on your approval rating.";
-    }
-  })();
-  </script>
-</head>
-<body>
 
-<div id="experiment_link">You must accept the HIT to begin the experiment</div>.
+<div id="experiment_link">
+  <p>You must accept the HIT to begin the experiment.</p>
+  <button type="button" id="start">Start Experiment</button>
+</div>
 
-<script>
-	// jsPsych has a method turkInfo() which can determine whether or not the
-	// HIT has been accepted.
-	var turkInfo = jsPsych.turkInfo();
-
-	// turkInfo.previewMode is true in two cases: when the HIT has not been
-	// accepted yet OR when the page is viewed outside of mechanical turk.
-	// The second property, outsideTurk, is true when the page is viewed
-	// outside of mechanical turk, so together, the statement will be true
-	// only when in Turk and when the HIT is not accepted yet.
-	if(turkInfo.previewMode && !turkInfo.outsideTurk) {
-	  $('#turkInfo').html('<a href="mb3syllables.html" target="_blank">Click Here to Start the Experiment</a>');
-	}
-</script>
-
-</body>
-</html>
