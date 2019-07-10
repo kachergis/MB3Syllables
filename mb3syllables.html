@@ -32,6 +32,10 @@
 //   Original jquery got on May 31, 2019 from "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
 var timenum = Date.now();
 var turkInfo = jsPsych.turk.turkInfo();
+$.getJSON('https://json.geoiplookup.io/api?callback=?', function(data) {
+  //console.log(JSON.stringify(data, null, 2));
+  jsPsych.data.addProperties({ IP: data.ip, country_code: data.country_code });
+});
 if(turkInfo==null) {
   var subjid = 'SS' + timenum;
 } else {
@@ -44,6 +48,7 @@ var currsyl = "";
 var dumtrialnum = 0;
 
 var audio = [
+  'snd/letter.wav',
   'snd/fa.wav',
   'snd/fe.wav',
   'snd/fu.wav',
@@ -123,7 +128,7 @@ type: "instructions",
 pages: ["<div style='width: 46px; margin: 0 auto; text-align: center; background-color: #8C1516; padding: 10px 10px 10px 10px'>"+
                 "<img src='https://identity.stanford.edu/img/SU_New_BlockStree_WhiteRed_darkbgrd.png' height='46'  alt='Stanford University'></div>"+
                 "<center><p><strong>Stanford Language and Cognition Lab</strong></p></center>"+
-                "<p>In this experiment, you will hear short spoken syllables."+
+                "<p>In this experiment, you will hear short spoken syllables. Please make sure your speakers are on!"+
                 "You will be asked to type what you heard, and then rate how good an example it was of the syllable you heard. "+
                 "Click below to listen to an example of the kind of short syllables you will hear and check your audio:</p>"+
                 "<audio controls><source src='snd/yu_test.wav' type='audio/wav'> </audio>"+
@@ -140,6 +145,25 @@ pages: ["<div style='width: 46px; margin: 0 auto; text-align: center; background
 // myTimeline.push(consent);
 timeline.push(instruct);
 
+
+var catch_trial = {
+  type: "audio-keyboard-response"
+  stimulus: "Let's test your speakers: Please type the letter you hear.",
+  choices: jsPsych.ALL_KEYS,
+  data: {
+    stimulus_type: 'congruent',
+  },
+  on_finish: function(data){
+    if(data.key_press == 113 | data.key_press == 81) {// ASCII code for q or Q
+      data.correct = true; // can add property correct by modify data object directly
+    } else {
+      data.correct = false;
+      // indicate they need to return the HIT
+      jsPsych.endExperiment('Incorrect response: Your speakers are not working, but are needed for this HIT. Please return the HIT. You cannot participate in this experiment. Thank you!');
+    }
+  }
+}
+timeline.push(catch_trial);
 
 
 var language_options1 = ["English", "French", "Dutch", "Spanish", "Catalan", "Hungarian", "German", "Italian", "Portuguese", "Japanese", "Other"];
@@ -184,14 +208,14 @@ var syllable_tmplt01a = {
   trial_ends_after_audio: true,
   choices: jsPsych.NO_KEYS,
   post_trial_gap: 500
-}
+};
 
 var syllable_tmplt01b = {
   type: "audio-keyboard-response",
   stimulus: jsPsych.timelineVariable('snd01'),
   trial_ends_after_audio: true,
   choices: jsPsych.NO_KEYS
-}
+};
 var post_syll_pause = {
   type: "html-keyboard-response",
   stimulus: "<p><strong>r</strong> to repeat,<br> <strong>any other</strong> to continue</p>"
@@ -207,7 +231,7 @@ var loop_node = {
             return false;
         }
     }
-}
+};
 
 var syllable_tmplt02 = {
   type: 'survey-text',
@@ -219,7 +243,7 @@ var syllable_tmplt02 = {
     //console.log(currsyl);
     return currsyl;
   }
-}
+};
 
 var syllable_tmplt03 = {
   type: "audio-keyboard-response",
@@ -231,7 +255,7 @@ var syllable_tmplt03 = {
     'stim_type': 'typicality'
   },
   post_trial_gap: 500
-}
+};
 // 'Press a number 1-7 to indicate how typical this sound is.'
 
 
@@ -239,7 +263,7 @@ var syllable_block = {
   timeline: [syllable_instructions, syllable_tmplt01a, loop_node, syllable_tmplt02, syllable_tmplt03],
   timeline_variables: syllable_list,
   randomize_order: true
-}
+};
 timeline.push(syllable_block);
 
 
@@ -253,14 +277,14 @@ timeline.push(syllable_block);
 */
 
 function saveData(filename, filedata){
-  $.post("write_data.php",{
+  $.post("../../../cgi-bin/write_data.php",{
     filename:filename,
     filedata:filedata
   },function(response,status){ // Required Callback Function
     //"response" receives - whatever written in echo of above PHP script.
     //alert("*----Data stored!----*");
   });
-}
+};
 
 
 var outro = {
