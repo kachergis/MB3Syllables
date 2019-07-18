@@ -147,8 +147,9 @@ timeline.push(instruct);
 
 
 var catch_trial = {
-  type: "audio-keyboard-response"
-  stimulus: "Let's test your speakers: Please type the letter you hear.",
+  type: "audio-keyboard-response",
+  stimulus: 'snd/letter.wav',
+  prompt: "Let's test your speakers: Please type the letter you hear.",
   choices: jsPsych.ALL_KEYS,
   data: {
     stimulus_type: 'congruent',
